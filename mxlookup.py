@@ -35,6 +35,18 @@ def isOffice365(mxRecord):
     except:
         return False
 
+def removeDuplicatedDomains(filename):
+    contacts = readCsv(filename)
+    temp = []
+
+    for contact in contacts:
+        email = contact[0]
+        domain = email.split('@')[1].lower()
+
+        if domain not in temp:
+            temp.append(domain)
+            writeCsv('initial-3.unique.csv', [email])
+
 def main():
     writeCsv('result.csv', ['email', 'domain', 'mxRecord'])
     contacts = readCsv('./emails.csv')
@@ -56,6 +68,7 @@ def main():
             continue
 
 if __name__ == '__main__':
-    main()
+    # main()
+    removeDuplicatedDomains('./initial-3.csv')
     # mxLookup('mcneillhotels.com')
     # isOffice365('hilton-com.mail.protection.outlook.com.')

@@ -41,16 +41,19 @@ def main():
     temp = []
 
     for index, contact in enumerate(contacts[1:len(contacts)]):
-        email = contact[2]
-        domain = email.split('@')[1].lower()
-        mxRecord = mxLookup(domain)
-        completed = round((index / (len(contacts) - 1)) * 100, 2)
-        print(str(completed) + '%')
-        
-        if isOffice365(mxRecord) and (domain not in temp):
-            temp.append(domain)
-            writeCsv('result.csv', [email, domain, mxRecord])
-            print(email, domain, mxRecord)
+        try:
+            email = contact[2]
+            domain = email.split('@')[1].lower()
+            mxRecord = mxLookup(domain)
+            completed = round((index / (len(contacts) - 1)) * 100, 2)
+            print(str(completed) + '%')
+            
+            if isOffice365(mxRecord) and (domain not in temp):
+                temp.append(domain)
+                writeCsv('result.csv', [email, domain, mxRecord])
+                print(email, domain, mxRecord)
+        except:
+            continue
 
 if __name__ == '__main__':
     main()

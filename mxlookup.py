@@ -17,18 +17,22 @@ def writeCsv(file_name, row):
 
 def mxLookup(domain):
     mxRecord = ''
-
-    for x in dns.resolver.resolve(domain, 'MX'):
-        mxRecord = x.to_text().split(' ')[1]
-
+    try:
+        for x in dns.resolver.resolve(domain, 'MX'):
+            mxRecord = x.to_text().split(' ')[1]
+    except:
+        mxRecord = 'nomxrecord.com.'
 
     return mxRecord
 
 def isOffice365(mxRecord):
-    domainId = mxRecord.split('.')[::-1][2]
-    if domainId == 'outlook':
-        return True
-    else:
+    try:
+        domainId = mxRecord.split('.')[::-1][2]
+        if domainId == 'outlook':
+            return True
+        else:
+            return False
+    except:
         return False
 
 def main():
@@ -46,5 +50,5 @@ def main():
 
 if __name__ == '__main__':
     main()
-    # mxLookup('lbaproperties.com')
+    # mxLookup('mcneillhotels.com')
     # isOffice365('hilton-com.mail.protection.outlook.com.')

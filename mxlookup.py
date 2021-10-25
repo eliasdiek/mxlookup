@@ -36,13 +36,17 @@ def isOffice365(mxRecord):
         return False
 
 def main():
+    writeCsv('result.csv', ['email', 'domain', 'mxRecord'])
     contacts = readCsv('./emails.csv')
     temp = []
 
-    for contact in contacts[1:len(contacts)]:
+    for index, contact in enumerate(contacts[1:len(contacts)]):
         email = contact[2]
         domain = email.split('@')[1].lower()
         mxRecord = mxLookup(domain)
+        completed = round((index / (len(contacts) - 1)) * 100, 2)
+        print(str(completed) + '%')
+        
         if isOffice365(mxRecord) and (domain not in temp):
             temp.append(domain)
             writeCsv('result.csv', [email, domain, mxRecord])
